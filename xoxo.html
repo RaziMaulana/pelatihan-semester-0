@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-tac-toe</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            display: flex;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            background-image: linear-gradient(rgb(188, 184, 184), rgb(100, 100, 100));
+        }
+        .XOXO-card-container{
+            display: grid;
+            grid-template-columns: auto auto auto;
+            gap: 5px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 30px;
+            border: 4px solid black;
+        }
+        .XOXO-card{
+            display: flex;
+            width: 100px;
+            height: 100px;
+            border-radius: 30px;
+            justify-content: center;
+            align-items: center;
+            font-size: 80px;
+            font-weight: 900;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+            /*MOVE TO NEW CLASS*/
+
+            cursor: pointer;
+            background-color: gold;
+            border: 4px solid black;
+        }
+        .title{
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 40px;
+            font-weight: 700;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            
+            background-color: rgb(46, 16, 16);
+            border-radius: 25px;
+            color: white;
+        }
+        .super-parent{
+            display: flex;
+            flex-flow: column;
+        }
+
+        .color-blue{
+            color: blue;
+        }
+
+        .color-red{
+            color: red;
+        }
+
+        .pemenang{
+            display: flex;
+            position: absolute;
+            z-index: 2;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+
+            align-items: center;
+            opacity: 0;
+            justify-content: center;
+            flex-flow: column;
+            width: 3px;
+            height: 1px;
+            font-size: 1px;
+            border-radius: 20px;
+            border: 3px solid white;
+            color: white;
+            white-space: nowrap;
+            text-align: center;
+            padding: 10px;
+
+            background-image: linear-gradient(110deg, rgb(15, 15, 15), rgb(31, 31, 31), rgb(64, 63, 63));
+
+            transition: all 1s linear;
+        }
+
+        .Seri{
+            display: flex;
+            position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+
+            align-items: center;
+            opacity: 0;
+            justify-content: center;
+            flex-flow: column;
+            width: 3px;
+            height: 1px;
+            font-size: 1px;
+            border-radius: 20px;
+            border: 3px solid white;
+            color: white;
+            white-space: nowrap;
+            text-align: center;
+            padding: 10px;
+
+            background-image: linear-gradient(110deg, rgb(15, 15, 15), rgb(31, 31, 31), rgb(64, 63, 63));
+
+            transition: all 1s linear;
+        }
+
+        
+        .pemenang-muncul{
+            width: 350px;
+            height: 180px;
+            font-size: 18px;
+
+            transition: all 1s linear;
+        }
+
+        .super-parent{
+            margin: 0;
+            padding: 0;
+        }
+        .buttony{
+            width: 1px;
+            height: 0.1px;
+            font-size: 1px;
+            white-space: nowrap;
+            background-color: white;
+            color: blueviolet;
+            font-weight: 900;
+            transition: all 1s linear;
+            cursor: pointer;
+        }
+
+        .buttony-muncul{
+            width: 150px;
+            height: 30px;
+            font-size: 15px;
+            background-color: white;
+            color: blueviolet;
+            font-weight: 900;
+            transition: all 1s linear;
+        }
+
+        .redme{
+            color: red;
+        }
+
+        .blueme{
+            color: blue;
+        }
+
+        .container-toggler{
+            display: flex;
+            flex-flow: row;
+        }
+        .togglers{
+            position: absolute;
+            display: flex;
+            flex-flow: column;
+            gap: 5px;
+            transform: translateY(70%) translateX(863%);
+        }
+
+        .togglers > button{
+            transition: all 1s linear;
+            font-size: 40px;
+            width: 40px;
+            background-color: gold;
+
+            cursor: pointer;
+            border: 3px solid black;
+            opacity: 0.3;
+        }
+
+        .toggler-active{
+            transition: all 1s linear;
+            text-shadow: 0px 0px 20px red,
+            0px 0px 40px red,
+            0px 0px 60px red;
+            background-color: rgb(255, 228, 74) !important;
+            opacity: 1 !important;
+        }
+
+        .toggler-active-blue{
+            transition: all 1s linear;
+            text-shadow: 0px 0px 20px blue,
+            0px 0px 40px blue,
+            0px 0px 60px blue,
+            0px 0px 80px blue;
+            background-color: rgb(255, 228, 74) !important;
+            opacity: 1 !important;
+        }
+
+        .garis{
+            transition: clips 2s linear;
+            position: absolute;
+            background-color: black;
+            height: 30px;
+            border-radius: 20px;
+            transform: none;
+            clip: rect(0px ,0px ,0px ,0px);
+            width: 330px
+        }
+
+        .summon-garis{
+            transition: clip 2s linear;
+            clip: rect(0px ,1000px ,1000px ,0px);
+        }
+
+    </style>
+</head>
+<body>
+<span class="super-parent">
+
+    <div class="garis"></div>
+
+    <div class="pemenang">
+        <br>
+        <h3 id="selamat">Selamat!</h3>
+        <div id="tak-ada-yang-menang">"<span id="tzy"></span>" Memenangkan Pertandingan</div>
+        <br>
+        <button onclick="Retry()" class="buttony">Main Lagi</button>
+    </div>
+
+    <div class="Seri">
+        <br>
+        <h3 id="selamat">Whooopsss...!</h3>
+        <div id="tak-ada-yang-menang">Seri, Tak ada yang menang</div>
+        <br>
+        <button onclick="Retry()" class="buttony">Main Lagi</button>
+    </div>
+
+    <div class="title"><span class="redme">X</span><span class="blueme">O</span><span class="redme">X</span><span class="blueme">O</span> GAMES</div>
+<div class="container-toggler"> 
+  <div class="XOXO-card-container">
+    <div class="XOXO-card"></div>
+    <div class="XOXO-card"></div>
+    <div class="XOXO-card"></div>
+    <div class="XOXO-card"></div>
+    <div class="XOXO-card"></div>
+    <div class="XOXO-card"></div>
+    <div class="XOXO-card"></div>
+    <div class="XOXO-card"></div>
+    <div class="XOXO-card"></div>
+  </div>
+        <div class="togglers">
+        <button onclick="Xfirst()" class="Xbutton" style="color: red;">X</button>
+        <button onclick="Ofirst()" class="Obutton" style="color: blue;">O</button>
+        </div>
+
+</div>
+</span>
+<script>
+    var XOXO_Content = document.querySelectorAll('.XOXO-card')
+    var pemenangTzy = document.querySelector('.pemenang')
+    var SeriTzy = document.querySelector('.Seri')
+    var XB = document.querySelector('.Xbutton')
+    var OB = document.querySelector('.Obutton')
+    var line = document.querySelector('.garis')
+    var togglerActivator = 1
+    var button_retry = document.querySelectorAll('.buttony')
+
+    var tzy = document.getElementById('tzy')
+    var draw = document.getElementById('tak-ada-yang-menang')
+    var whoops = document.getElementById('selamat')
+
+    for (let i = 0; i < XOXO_Content.length; i++) {
+        XOXO_Content[i].addEventListener('click', showX)   
+        XOXO_Content[i].classList.add('color-red')
+    }
+
+    XB.classList.add('toggler-active')
+
+    function Xfirst(params) {
+        for (let i = 0; i < XOXO_Content.length; i++) {
+        XOXO_Content[i].addEventListener('click', showX)   
+        XOXO_Content[i].classList.add('color-red')
+        XOXO_Content[i].classList.remove('color-blue')
+        XB.classList.add('toggler-active')
+        OB.classList.remove('toggler-active-blue')
+        XOXO_Content[i].innerText = ''
+            togglerActivator = 1
+    }
+    }
+
+    function Ofirst(params) {
+        for (let i = 0; i < XOXO_Content.length; i++) {
+        XOXO_Content[i].addEventListener('click', showO)   
+        XOXO_Content[i].classList.add('color-blue')
+        XOXO_Content[i].classList.remove('color-red')
+        XB.classList.remove('toggler-active')
+        OB.classList.add('toggler-active-blue')
+        XOXO_Content[i].innerText = ''
+         togglerActivator = 2
+    }
+    }
+
+
+    function showX(params) {
+        this.innerText = "X"
+        menang();
+        for (let j = 0; j < XOXO_Content.length; j++) {
+            if (XOXO_Content[j].textContent == '') {
+                XOXO_Content[j].classList.remove('color-red')
+                XOXO_Content[j].classList.add('color-blue')
+
+                XOXO_Content[j].removeEventListener('click', showX)
+                XOXO_Content[j].addEventListener('click', showO)
+            }
+        }
+        
+    }
+
+    function showO(params) {
+        this.innerText = "O"
+        menang();
+        for (let j = 0; j < XOXO_Content.length; j++) {
+            if (XOXO_Content[j].textContent == '') {
+                XOXO_Content[j].classList.remove('color-blue')
+                XOXO_Content[j].classList.add('color-red')
+
+                XOXO_Content[j].removeEventListener('click', showO)
+                XOXO_Content[j].addEventListener('click', showX)
+            }
+        }
+    }
+
+    function menang(params) {
+        
+    if (
+       XOXO_Content[0].textContent == 'X'   
+    && XOXO_Content[1].textContent == 'X'  
+    && XOXO_Content[2].textContent == 'X' 
+    
+    || 
+    
+       XOXO_Content[0].textContent == 'O'   
+    && XOXO_Content[1].textContent == 'O'  
+    && XOXO_Content[2].textContent == 'O' ) {
+
+
+        tzy.innerText = XOXO_Content[0].textContent
+        line.style.transform = "translateY(480%) translateX(2%)"
+        summonLine()
+        menangCuy()
+    } 
+    
+    else if (
+       XOXO_Content[3].textContent == 'X'   
+    && XOXO_Content[4].textContent == 'X'  
+    && XOXO_Content[5].textContent == 'X' 
+    
+    || 
+    
+       XOXO_Content[3].textContent == 'O'   
+    && XOXO_Content[4].textContent == 'O'  
+    && XOXO_Content[5].textContent == 'O' ) {
+
+
+        tzy.innerText = XOXO_Content[3].textContent
+        line.style.transform = "translateY(820%) translateX(2%)"
+        summonLine()
+        menangCuy()
+
+    }
+
+    else if (
+       XOXO_Content[6].textContent == 'X'   
+    && XOXO_Content[7].textContent == 'X'  
+    && XOXO_Content[8].textContent == 'X' 
+    
+    || 
+    
+       XOXO_Content[6].textContent == 'O'   
+    && XOXO_Content[7].textContent == 'O'  
+    && XOXO_Content[8].textContent == 'O' ) {
+
+
+        tzy.innerText = XOXO_Content[7].textContent
+        line.style.transform = "translateY(1160%) translateX(2%)"
+        summonLine()
+        menangCuy()
+
+    }
+
+    else if (
+       XOXO_Content[0].textContent == 'X'   
+    && XOXO_Content[3].textContent == 'X'  
+    && XOXO_Content[6].textContent == 'X' 
+    
+    || 
+    
+       XOXO_Content[0].textContent == 'O'   
+    && XOXO_Content[3].textContent == 'O'  
+    && XOXO_Content[6].textContent == 'O' ) {
+
+
+        tzy.innerText = XOXO_Content[0].textContent
+        line.style.transform = "translateY(825%) translateX(-28%) rotate(90deg)"
+        summonLine()
+        menangCuy()
+
+    } 
+    
+    else if (
+       XOXO_Content[1].textContent == 'X'   
+    && XOXO_Content[4].textContent == 'X'  
+    && XOXO_Content[7].textContent == 'X' 
+    
+    || 
+    
+       XOXO_Content[1].textContent == 'O'   
+    && XOXO_Content[4].textContent == 'O'  
+    && XOXO_Content[7].textContent == 'O' ) {
+
+
+        tzy.innerText = XOXO_Content[4].textContent
+        line.style.transform = "translateY(825%) translateX(3%) rotate(90deg)"
+        summonLine()
+        menangCuy()
+
+    }
+
+    else if (
+       XOXO_Content[2].textContent == 'X'   
+    && XOXO_Content[5].textContent == 'X'  
+    && XOXO_Content[8].textContent == 'X' 
+    
+    || 
+    
+       XOXO_Content[2].textContent == 'O'   
+    && XOXO_Content[5].textContent == 'O'  
+    && XOXO_Content[8].textContent == 'O' ) {
+
+
+        tzy.innerText = XOXO_Content[8].textContent
+        line.style.transform = "translateY(825%) translateX(35%) rotate(90deg)"
+        summonLine()
+        menangCuy()
+
+    }
+
+    else if (
+       XOXO_Content[0].textContent == 'X'   
+    && XOXO_Content[4].textContent == 'X'  
+    && XOXO_Content[8].textContent == 'X' 
+    
+    || 
+    
+       XOXO_Content[0].textContent == 'O'   
+    && XOXO_Content[4].textContent == 'O'  
+    && XOXO_Content[8].textContent == 'O' ) {
+
+
+        tzy.innerText = XOXO_Content[4].textContent
+        line.style.transform = "translateY(825%) translateX(-9%) rotate(44deg)"
+        line.style.width = "430px"
+        summonLine()
+        menangCuy()
+
+    }
+
+    else if (
+       XOXO_Content[2].textContent == 'X'   
+    && XOXO_Content[4].textContent == 'X'  
+    && XOXO_Content[6].textContent == 'X' 
+    
+    || 
+    
+       XOXO_Content[2].textContent == 'O'   
+    && XOXO_Content[4].textContent == 'O'  
+    && XOXO_Content[6].textContent == 'O' ) {
+
+
+        tzy.innerText = XOXO_Content[6].textContent
+        line.style.transform = "translateY(825%) translateX(-9%) rotate(-44deg)"
+        line.style.width = "430px"
+        summonLine()
+        menangCuy()
+
+    }else if(
+       XOXO_Content[0].textContent != ''   
+    && XOXO_Content[1].textContent != ''  
+    && XOXO_Content[2].textContent != '' 
+    && XOXO_Content[3].textContent != ''   
+    && XOXO_Content[4].textContent != ''  
+    && XOXO_Content[5].textContent != '' 
+    && XOXO_Content[6].textContent != ''  
+    && XOXO_Content[7].textContent != '' 
+    && XOXO_Content[8].textContent != ''   
+    ){
+        seriCuy()
+    }
+}
+
+function Retry(params) {
+    pemenangTzy.style.opacity = '0'
+    pemenangTzy.classList.remove('pemenang-muncul')
+    button_retry[0].classList.remove('buttony-muncul')
+    SeriTzy.style.opacity = '0'
+    SeriTzy.classList.remove('pemenang-muncul')
+    button_retry[1].classList.remove('buttony-muncul')
+    line.classList.remove('summon-garis')
+    line.style.width = "330px"
+
+    if (togglerActivator == 1) {
+        
+    for (let k = 0; k < XOXO_Content.length; k++) {
+        XOXO_Content[k].innerText = ''
+        XOXO_Content[k].removeEventListener('click', showO)
+        XOXO_Content[k].addEventListener('click', showX)
+        XOXO_Content[k].classList.remove('color-blue')
+        XOXO_Content[k].classList.add('color-red')
+    }
+    }else if (togglerActivator == 2) {
+        
+        for (let k = 0; k < XOXO_Content.length; k++) {
+            XOXO_Content[k].innerText = ''
+            XOXO_Content[k].removeEventListener('click', showX)
+            XOXO_Content[k].addEventListener('click', showO)
+            XOXO_Content[k].classList.remove('color-red')
+            XOXO_Content[k].classList.add('color-blue')
+        }
+        }
+
+}
+
+function menangCuy(params) {
+    setTimeout(function () {
+        pemenangTzy.style.opacity = '1'
+        pemenangTzy.classList.add('pemenang-muncul')
+        button_retry[0].classList.add('buttony-muncul')
+    }, 1500)
+}
+
+function seriCuy(params) {
+        SeriTzy.style.opacity = '1'
+        SeriTzy.classList.add('pemenang-muncul')
+        button_retry[1].classList.add('buttony-muncul')
+}
+
+function summonLine(params) {
+    line.classList.add('summon-garis')
+}
+
+
+
+</script>
+</body>
+</html>
